@@ -1,0 +1,6 @@
+id,category,owner,status,priority,hours,sla
+MDL-01,Logistic regression,Model Dev,Validated,Low,3.4,8
+MDL-02,Random forest,Model Dev,Validated,Medium,5.3,8
+CHK-03,Data drift,Monitoring,Open,High,2.0,4
+VAL-04,Back-test,Validation,Closed,Medium,6.1,12
+EXP-05,Explainability,Governance,Approved,Low,4.2,12

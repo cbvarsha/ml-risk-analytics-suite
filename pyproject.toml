@@ -1,0 +1,8 @@
+[project]
+name = "ml-risk-analytics-suite"
+version = "1.0.0"
+description = "Explainable credit-risk modelling, validation and monitoring."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
