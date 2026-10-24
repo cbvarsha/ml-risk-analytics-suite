@@ -5,11 +5,23 @@ def probability_default(income, debt_ratio, missed_payments, utilisation):
     logit=-3.4 - income/180000 + 3.1*debt_ratio + .72*missed_payments + 1.4*utilisation
     return round(sigmoid(logit),4)
 def confusion(y_true, probabilities, threshold=.5):
+    if len(y_true) != len(probabilities):
+        raise ValueError("Labels and probabilities must have equal length")
+    if not 0 <= threshold <= 1:
+        raise ValueError("Threshold must be between 0 and 1")
+    if any(not 0 <= p <= 1 for p in probabilities):
+        raise ValueError("Probabilities must be between 0 and 1")
     out={"tp":0,"tn":0,"fp":0,"fn":0}
     for actual,p in zip(y_true,probabilities):
         predicted=int(p>=threshold); out["tp" if actual and predicted else "tn" if not actual and not predicted else "fp" if predicted else "fn"]+=1
     return out
 def population_stability(expected, actual):
+    if len(expected) != len(actual) or not expected:
+        raise ValueError("PSI distributions must be nonempty and equal length")
+    if any(not math.isfinite(x) or x < 0 for x in [*expected, *actual]):
+        raise ValueError("PSI values must be finite and nonnegative")
+    if not math.isclose(sum(expected), 1.0, abs_tol=1e-5) or not math.isclose(sum(actual), 1.0, abs_tol=1e-5):
+        raise ValueError("PSI distributions must sum to one")
     total=0.0
     for e,a in zip(expected,actual):
         e=max(e,1e-6); a=max(a,1e-6); total+=(a-e)*math.log(a/e)
